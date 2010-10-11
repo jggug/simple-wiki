@@ -1,0 +1,7 @@
+.classpath
+.project
+.settings/org.codehaus.groovy.eclipse.preferences.prefs
+web-app/WEB-INF/applicationContext.xml
+web-app/WEB-INF/sitemesh.xml
+web-app/WEB-INF/tld/grails.tld
+web-app/WEB-INF/tld/spring.tld
