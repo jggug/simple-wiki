@@ -217,43 +217,43 @@ public class AnchorMacro extends BaseMacro {
 public class GroovyMacro extends BaseMacro {
     String getName() {"groovy"}
     void execute(Writer writer, MacroParameter params) {
-      if(params.content){
-        StringWriter out = new StringWriter();
-        StringWriter err = new StringWriter();
-        PrintWriter stdout = new PrintWriter(out);
-        PrintWriter stderr = new PrintWriter(err);
+        if(params.content){
+            StringWriter out = new StringWriter();
+            StringWriter err = new StringWriter();
+            PrintWriter stdout = new PrintWriter(out);
+            PrintWriter stderr = new PrintWriter(err);
 
-        CompilerConfiguration cc = new CompilerConfiguration();
-        cc.setOutput(stdout)
-        cc.setSourceEncoding("utf-8");
+            CompilerConfiguration cc = new CompilerConfiguration();
+            cc.setOutput(stdout)
+            cc.setSourceEncoding("utf-8");
 
-        def b = new Binding();
-        b.setVariable("out",stdout)
-        b.setVariable("err",stderr)
-        def shell = new GroovyShell(Thread.currentThread().getContextClassLoader(),b,cc)
-        def script = params.content.replaceAll("&#62;",">")
-        def result = ""
-        try {
-          Script parse = shell.parse(script)
-          parse.run()
-          stdout.flush()
-          result = out.toString()
-        } catch(Exception e) {
-          result = "<b>ERROR</b> ${e}"
-        } finally {
-          out.close()
-          err.close()
-          stdout.close()
-          stderr.close()
+            def b = new Binding();
+            b.setVariable("out",stdout)
+            b.setVariable("err",stderr)
+            def shell = new GroovyShell(Thread.currentThread().getContextClassLoader(),b,cc)
+            def script = params.content.replaceAll("&#62;",">")
+            def result = ""
+            try {
+                Script parse = shell.parse(script)
+                parse.run()
+                stdout.flush()
+                result = out.toString()
+            } catch(Exception e) {
+                result = "<b>ERROR</b> ${e}"
+            } finally {
+                out.close()
+                err.close()
+                stdout.close()
+                stderr.close()
+            }
+            writer << "<pre>"
+            writer << result
+            writer << "</pre>"
+            writer << '<pre class="groovy">' << params.content << "</pre>"
+        }else{
+            writer <<""
         }
-        writer << "<pre>"
-        writer << result
-        writer << "</pre>"
-        writer << '<pre class="groovy">' << params.content << "</pre>"
-      }else{
-        writer <<""
-      }
-  }
+    }
 }
 
 
@@ -297,10 +297,10 @@ class CodeFilter extends RegexTokenFilter {
 
 
     public void handleMatch(StringBuffer buffer, MatchResult result, FilterContext context) {
-		def text = result.group(1)
-		// are we inside a code block?
-		if(text.indexOf('class="code"') > -1) buffer << "@$text@"
-		else buffer << "<code>${text}</code>"
+        def text = result.group(1)
+        // are we inside a code block?
+        if(text.indexOf('class="code"') > -1) buffer << "@$text@"
+        else buffer << "<code>${text}</code>"
     }
 }
 class ImageFilter  extends RegexTokenFilter {

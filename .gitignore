@@ -5,3 +5,8 @@ web-app/WEB-INF/applicationContext.xml
 web-app/WEB-INF/sitemesh.xml
 web-app/WEB-INF/tld/grails.tld
 web-app/WEB-INF/tld/spring.tld
+web-app/WEB-INF/tld/c.tld
+web-app/WEB-INF/tld/fmt.tld
+grails-simple-wiki-*.zip
+grails-simple-wiki-*.sha1
+plugin.xml
