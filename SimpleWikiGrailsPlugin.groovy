@@ -4,8 +4,9 @@ import org.radeox.engine.context.BaseInitialRenderContext
 import org.springframework.cache.ehcache.EhCacheFactoryBean
 
 class SimpleWikiGrailsPlugin {
+    def group = 'org.jggug.plugin'
     // the plugin version
-    def version = "0.1"
+    def version = "0.1.0-jggug"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "1.3.5 > *"
     // the other plugins this plugin depends on
