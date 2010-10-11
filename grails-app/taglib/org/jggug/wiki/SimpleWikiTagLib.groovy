@@ -20,6 +20,7 @@ class SimpleWikiTagLib {
 
     /** pankuzu */
     def topicPath = { attrs, body ->
+        String url = attrs.url?:createLink(uri:'/')
         if(attrs.page) {
             out << "<ul id='crumbs'>"
             def parentList=parentLink(attrs.page).reverse()
@@ -27,7 +28,7 @@ class SimpleWikiTagLib {
                 if((idx+1)==parentList.size()) {
                     out << "<li>${title}</li>"
                 } else {
-                    out << "<li><a href='${createLink(url:'/')}/display/${title}'>"
+                    out << "<li><a href='${url}display/${title}'>"
                     out << title
                     out << "</a></li>"
                 }
