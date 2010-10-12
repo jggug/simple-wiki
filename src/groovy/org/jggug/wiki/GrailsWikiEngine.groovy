@@ -22,6 +22,8 @@ import org.springframework.beans.BeanWrapperImpl
 import java.lang.reflect.Field
 import org.radeox.api.engine.context.RenderContext
 
+import static org.codehaus.groovy.grails.commons.ConfigurationHolder.config as config
+
 /**
 * @author Graeme Rocher
 * @since 1.0
@@ -123,7 +125,7 @@ class GrailsWikiEngine extends BaseRenderEngine implements WikiRenderEngine{
                 name = name[0..name.indexOf('#')-1]
             }
         
-            def page = Page.findByTitle(name)//TODO 外部化
+            def page = config.simple.wiki.content.class.findByTitle(name)//TODO 外部化
         
             return page != null
         }
