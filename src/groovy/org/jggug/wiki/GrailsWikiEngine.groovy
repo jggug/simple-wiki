@@ -141,7 +141,7 @@ class GrailsWikiEngine extends BaseRenderEngine implements WikiRenderEngine{
         if(name.startsWith("http:")||name.startsWith("https:"))
             buffer <<  "<a href=\"$name#$anchor\" class=\"pageLink\">$view</a>"
         else
-            buffer <<  "<a href=\"$contextPath/$name#$anchor\" class=\"pageLink\">$view</a>"
+            buffer <<  "<a href=\"$contextPath/display/$name#$anchor\" class=\"pageLink\">$view</a>"
     }
 
     public void appendLink(StringBuffer buffer, String name, String view) {
@@ -162,7 +162,7 @@ class GrailsWikiEngine extends BaseRenderEngine implements WikiRenderEngine{
             if(decoded.startsWith("http:")||decoded.startsWith("https:") || decoded.startsWith("mailto:"))
                 buffer <<  "<a href=\"$decoded\" class=\"pageLink\">$view</a>"
             else
-                buffer <<  "<a href=\"$contextPath/$name\" class=\"pageLink\">$view</a>"
+                buffer <<  "<a href=\"$contextPath/display/$name\" class=\"pageLink\">$view</a>"
         }
 
     }
