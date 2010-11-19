@@ -13,12 +13,11 @@ class SimpleWikiTagLib {
             def text = wikiEngine.render(content.trim(),""+pageId, wikiContext)
             out<<text
         }else{
-            println "wikiEngine ERROR"
-            out<<""
+            out<<"(wiki engine ERROR)"
         }
     }
 
-    /** pankuzu */
+    /** breadcrumb */
     def topicPath = { attrs, body ->
         String url = attrs.url?:createLink(uri:'/')
         if(attrs.page) {
