@@ -34,7 +34,7 @@ class GrailsWikiEngine extends BaseRenderEngine implements WikiRenderEngine{
 
     static CONTEXT_PATH = "contextPath"
     static CACHE = "cache"
-    
+
     def pageId
 
     public GrailsWikiEngine(InitialRenderContext initialRenderContext) {
@@ -44,16 +44,15 @@ class GrailsWikiEngine extends BaseRenderEngine implements WikiRenderEngine{
     public GrailsWikiEngine() {
         super();
     }
-    
+
     public String render(String content, String pageId, RenderContext context) {
       this.pageId=pageId
       return this.render(content,context);
     }
-    
+
     protected void init() {
       if (null == fp) {
           FilterPipe localFP = new FilterPipe(initialContext);
-          
 
             def filters = [
                             ParamFilter,
@@ -108,7 +107,6 @@ class GrailsWikiEngine extends BaseRenderEngine implements WikiRenderEngine{
         field.set(this, filterPipe)
     }
 
-    
     public boolean exists(String name) {
         if(name.startsWith('#')) {
             // its an anchor link
@@ -120,13 +118,13 @@ class GrailsWikiEngine extends BaseRenderEngine implements WikiRenderEngine{
         else {
             def cache = initialContext.get(CACHE)
             if(cache?.getWikiText(name)) return true
-        
+
             if(name.indexOf("#")>-1) {
                 name = name[0..name.indexOf('#')-1]
             }
-        
-            def page = config.simple.wiki.content.class.findByTitle(name)//TODO 外部化
-        
+
+            def page = config.simple.wiki.content.class.findByTitle(name)
+
             return page != null
         }
     }
@@ -158,13 +156,11 @@ class GrailsWikiEngine extends BaseRenderEngine implements WikiRenderEngine{
             appendLink(buffer,URLEncoder.encode(decoded[0..i-1],'utf-8'),view, decoded[i+1..-1])            
         }
         else {
-
             if(decoded.startsWith("http:")||decoded.startsWith("https:") || decoded.startsWith("mailto:"))
                 buffer <<  "<a href=\"$decoded\" class=\"pageLink\">$view</a>"
             else
                 buffer <<  "<a href=\"$contextPath/display/$name\" class=\"pageLink\">$view</a>"
         }
-
     }
 
     public void appendCreateLink(StringBuffer buffer, String name, String view) {
@@ -213,7 +209,6 @@ public class AnchorMacro extends BaseMacro {
             writer << "<a name=\"$name\">${body}</a>"
         }
     }
-
 }
 
 public class GroovyMacro extends BaseMacro {
@@ -297,7 +292,6 @@ class CodeFilter extends RegexTokenFilter {
         super(/\s@([^\n]*?)@\s/);
     }
 
-
     public void handleMatch(StringBuffer buffer, MatchResult result, FilterContext context) {
         def text = result.group(1)
         // are we inside a code block?
@@ -310,12 +304,10 @@ class ImageFilter  extends RegexTokenFilter {
         super(/!(\S*?)!/);
     }
 
-
     public void handleMatch(StringBuffer buffer, MatchResult result, FilterContext context) {
 
         def img = result.group(1)
         def path = context.renderContext.get(GrailsWikiEngine.CONTEXT_PATH) ?: "."
-                    
 
         def image = img.startsWith("http:") ? img :  "$path/images/$img"
 
@@ -333,10 +325,8 @@ class LinkTestFilter extends RegexTokenFilter {
     public void handleMatch(StringBuffer buffer, MatchResult matchResult, FilterContext filterContext) {
         def engine = filterContext.getRenderContext().getRenderEngine()
 
-        
         if(engine instanceof WikiRenderEngine) {
             GrailsWikiEngine wikiEngine = engine
-
 
             try {
                 String name = matchResult.group(1)
@@ -370,7 +360,6 @@ class TextileLinkFilter extends RegexTokenFilter {
         super(/"([^"]+?)":(\S+?)(\s)/);
     }
 
-
     public void handleMatch(StringBuffer buffer, MatchResult result, FilterContext context) {
         def text = result.group(1)
         def link = result.group(2)
@@ -389,7 +378,6 @@ class HeaderFilter extends RegexTokenFilter{
     public HeaderFilter() {
         super(/(?m)^h(\d)\.\s+?(.*?)$/);
     }
-
 
     public void handleMatch(StringBuffer out, MatchResult matchResult, FilterContext filterContext) {
 
@@ -443,6 +431,11 @@ class TableFilter extends RegexTokenFilter {
         stringBuffer << '</table>'
 
     }
-
-
+}
+class ListFilter extends org.radeox.filter.ListFilter {
+    @Override
+    void handleMatch(StringBuffer buffer, MatchResult result, FilterContext context) {
+        super.handleMatch(buffer, result, context)
+        buffer << "\n\n"
+    }
 }
